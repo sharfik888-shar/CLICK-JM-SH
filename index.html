@@ -38,15 +38,12 @@ body{font-family:system-ui,sans-serif;background:linear-gradient(135deg,#1a1a2e,
 .case-card{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:16px;padding:15px;display:flex;align-items:center;gap:15px;cursor:pointer;transition:0.2s}
 .case-card:active{background:rgba(255,255,255,.15)}
 .case-card.disabled{opacity:0.4;pointer-events:none}
-
-/* SVG КЕЙСЫ */
 .case-svg-wrapper{width:60px;height:60px;flex-shrink:0;animation:float 3s ease-in-out infinite}
 .case-svg-wrapper svg{width:100%;height:100%;filter:drop-shadow(0 5px 10px rgba(0,0,0,0.5))}
 @keyframes float{0%{transform:translateY(0px)}50%{transform:translateY(-6px)}100%{transform:translateY(0px)}}
 .case-card:nth-child(2) .case-svg-wrapper{animation-delay:0.5s}
 .case-card:nth-child(3) .case-svg-wrapper{animation-delay:1s}
 .case-card:nth-child(4) .case-svg-wrapper{animation-delay:1.5s;filter:drop-shadow(0 0 15px #ff0080)}
-
 .case-info{flex:1}
 .case-info h3{font-size:16px;margin-bottom:3px}
 .case-info p{font-size:12px;opacity:0.7}
@@ -66,9 +63,10 @@ body{font-family:system-ui,sans-serif;background:linear-gradient(135deg,#1a1a2e,
 .r-legendary{border-color:#f59e0b}.r-legendary .nft-rarity{color:#f59e0b}
 .r-mythic{border-color:#ef4444;box-shadow:0 0 20px rgba(239,68,68,0.5)}.r-mythic .nft-rarity{color:#ef4444}
 
-.open-anim{text-align:center;padding:20px 0}
-.open-emoji{font-size:100px;animation:pulse 0.3s infinite alternate}
-@keyframes pulse{to{transform:scale(1.1)}}
+/* АНИМАЦИЯ ОТКРЫТИЯ */
+.open-anim{text-align:center;padding:20px 0; display: flex; flex-direction: column; align-items: center;}
+.spin-img{width:150px;height:150px;border-radius:16px;background-repeat:no-repeat;background-color:#000;border:3px solid #8892b0;animation:pulse 0.1s infinite alternate;margin: 0 auto;}
+@keyframes pulse{to{transform:scale(1.05)}}
 .reveal-card{display:flex;flex-direction:column;align-items:center;animation:reveal 0.6s ease-out}
 @keyframes reveal{0%{transform:scale(0) rotate(-180deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
 .reveal-img{width:200px;height:200px;border-radius:16px;border:3px solid #fbbf24;box-shadow:0 0 40px rgba(251,191,36,0.5);background-repeat:no-repeat;background-color:#000}
@@ -165,7 +163,7 @@ function save(){
 const fmt = n => n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':Math.floor(n).toString();
 
 // ==========================================
-// НАШИ NFT ИЗ КАРТИНОК (SPRITE SHEET)
+// НАШИ NFT (УБЕДИСЬ, ЧТО ФАЙЛЫ НАЗВАНЫ set1, set2, set3, set4)
 // ==========================================
 const NFT_POOL = {
   common: [
@@ -213,13 +211,10 @@ function getNftStyle(nft) {
   return `background-image:url('${nft.img}'); background-size:${nft.cols*100}% ${nft.rows*100}%; background-position:${posX}% ${posY}%;`;
 }
 
-// ============ КЕЙСЫ (КРАСИВЫЕ SVG) ============
+// ============ КЕЙСЫ (SVG) ============
 const SVG_BRONZE = `<svg viewBox="0 0 100 100"><defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#b06e3c"/><stop offset="100%" stop-color="#6b3e1f"/></linearGradient><linearGradient id="br" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#b8860b"/></linearGradient></defs><rect x="15" y="45" width="70" height="45" rx="8" fill="url(#b)" stroke="#ffd700" stroke-width="2"/><rect x="10" y="30" width="80" height="20" rx="6" fill="url(#b)" stroke="#ffd700" stroke-width="2"/><rect x="42" y="30" width="16" height="60" fill="url(#br)"/><path d="M50 30 Q30 10 20 25 Q35 30 50 30" fill="url(#br)"/><path d="M50 30 Q70 10 80 25 Q65 30 50 30" fill="url(#br)"/><rect x="40" y="55" width="20" height="15" rx="4" fill="#ffd700"/><circle cx="50" cy="62" r="3" fill="#6b3e1f"/></svg>`;
-
 const SVG_SILVER = `<svg viewBox="0 0 100 100"><defs><linearGradient id="s" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#d3d3d3"/><stop offset="100%" stop-color="#708090"/></linearGradient><linearGradient id="sr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#b0c4de"/></linearGradient></defs><rect x="15" y="45" width="70" height="45" rx="8" fill="url(#s)" stroke="#fff" stroke-width="2"/><rect x="10" y="30" width="80" height="20" rx="6" fill="url(#s)" stroke="#fff" stroke-width="2"/><rect x="42" y="30" width="16" height="60" fill="url(#sr)"/><path d="M50 30 Q30 10 20 25 Q35 30 50 30" fill="url(#sr)"/><path d="M50 30 Q70 10 80 25 Q65 30 50 30" fill="url(#sr)"/><rect x="40" y="55" width="20" height="15" rx="4" fill="#fff"/><circle cx="50" cy="62" r="3" fill="#708090"/></svg>`;
-
 const SVG_GOLD = `<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#daa520"/></linearGradient><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffefd5"/><stop offset="100%" stop-color="#ffb6c1"/></linearGradient></defs><rect x="15" y="45" width="70" height="45" rx="8" fill="url(#g)" stroke="#ffefd5" stroke-width="2"/><rect x="10" y="30" width="80" height="20" rx="6" fill="url(#g)" stroke="#ffefd5" stroke-width="2"/><rect x="42" y="30" width="16" height="60" fill="url(#gr)"/><path d="M50 30 Q30 10 20 25 Q35 30 50 30" fill="url(#gr)"/><path d="M50 30 Q70 10 80 25 Q65 30 50 30" fill="url(#gr)"/><polygon points="50,50 52,55 57,55 53,58 55,63 50,60 45,63 47,58 43,55 48,55" fill="#fff"/><rect x="40" y="55" width="20" height="15" rx="4" fill="#ffefd5"/><circle cx="50" cy="62" r="3" fill="#daa520"/></svg>`;
-
 const SVG_MYTHIC = `<svg viewBox="0 0 100 100"><defs><linearGradient id="m" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4a148c"/><stop offset="100%" stop-color="#1a0033"/></linearGradient><linearGradient id="mr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff0080"/><stop offset="100%" stop-color="#ff8c00"/></linearGradient></defs><rect x="15" y="45" width="70" height="45" rx="8" fill="url(#m)" stroke="#ff0080" stroke-width="2"/><rect x="10" y="30" width="80" height="20" rx="6" fill="url(#m)" stroke="#ff0080" stroke-width="2"/><rect x="42" y="30" width="16" height="60" fill="url(#mr)"/><path d="M50 30 Q30 10 20 25 Q35 30 50 30" fill="url(#mr)"/><path d="M50 30 Q70 10 80 25 Q65 30 50 30" fill="url(#mr)"/><circle cx="50" cy="55" r="8" fill="#ff0080" opacity="0.8"/><circle cx="50" cy="55" r="4" fill="#fff"/></svg>`;
 
 const CASES = [
@@ -345,10 +340,17 @@ function openCase(caseId){
   document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
   openModal('openModal');
 
-  const spinEmojis = ['🪨','🍎','🐟','🌿','🥈','🔷','🦊','💜','🦁','🐉','👑','🏎️','🐲','🌌'];
   let ticks = 0;
   const interval = setInterval(() => {
-    anim.innerHTML = `<div class="open-emoji">${spinEmojis[Math.floor(Math.random() * spinEmojis.length)]}</div>`;
+    // ТУТ ТЕПЕРЬ КРУТЯТСЯ ТВОИ NFT ВМЕСТО ЭМОДЗИ
+    const allRarities = ['common', 'rare', 'epic', 'legendary', 'mythic'];
+    const rndRarity = allRarities[Math.floor(Math.random() * allRarities.length)];
+    const rndPool = NFT_POOL[rndRarity];
+    const rndNft = rndPool[Math.floor(Math.random() * rndPool.length)];
+    const rndStyle = getNftStyle(rndNft);
+    
+    anim.innerHTML = `<div class="spin-img" style="${rndStyle}"></div>`;
+    
     playTickSound(); ticks++;
     if (ticks > 15){
       clearInterval(interval);
