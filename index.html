@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>CLICK JM-SH</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;min-height:100vh;user-select:none;overflow:hidden}
+.header{text-align:center;padding:40px 20px 10px}
+.balance{font-size:48px;font-weight:800;background:linear-gradient(90deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tap-area{display:flex;justify-content:center;align-items:center;height:50vh}
+.coin{width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fde047,#f59e0b);box-shadow:0 10px 50px rgba(245,158,11,.5);display:flex;justify-content:center;align-items:center;font-size:90px;cursor:pointer;transition:transform .08s}
+.coin:active{transform:scale(.9)}
+.float{position:fixed;pointer-events:none;font-weight:800;color:#fbbf24;font-size:26px;animation:up .8s ease-out forwards;z-index:100}
+@keyframes up{to{transform:translateY(-90px);opacity:0}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="balance" id="balance">0</div>
+</div>
+<div class="tap-area"><div class="coin" id="coin">🪙</div></div>
+
+<script>
+const tg = window.Telegram?.WebApp;
+if (tg){ tg.ready(); tg.expand(); }
+
+let coins = 0;
+const balance = document.getElementById('balance');
+const fmt = n => n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':Math.floor(n).toString();
+
+document.getElementById('coin').addEventListener('click', e => {
+  coins++;
+  balance.textContent = fmt(coins);
+  tg?.HapticFeedback?.impactOccurred('light');
+  const f = document.createElement('div');
+  f.className = 'float';
+  f.textContent = '+1';
+  f.style.left = (e.clientX - 20) + 'px';
+  f.style.top  = (e.clientY - 20) + 'px';
+  document.body.appendChild(f);
+  setTimeout(() => f.remove(), 800);
+});
+</script>
+</body>
+</html>
